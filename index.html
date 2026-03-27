@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>An Ethnography of the Present — Design Brief v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06080c;
+    --text: #d4dce8;
+    --text-dim: #6b7a8e;
+    --text-bright: #eaf0f8;
+    --accent: #5e8fa8;
+    --accent-warm: #a88a5e;
+    --line: rgba(94, 143, 168, 0.15);
+    --line-strong: rgba(94, 143, 168, 0.35);
+    --serif: 'Instrument Serif', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; background: var(--bg); }
+
+  body {
+    font-family: var(--sans);
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    font-size: 17px;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.025;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+
+  /* ─── Hero ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 900px;
+    height: 900px;
+    background: radial-gradient(circle, rgba(94,143,168,0.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* Multiple breathing rings */
+  .ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    border: 1px solid rgba(94,143,168,0.05);
+    pointer-events: none;
+  }
+
+  .ring-1 {
+    width: 400px; height: 400px;
+    transform: translate(-50%, -50%);
+    animation: breathe 8s ease-in-out infinite;
+  }
+
+  .ring-2 {
+    width: 550px; height: 550px;
+    transform: translate(-50%, -50%);
+    animation: breathe 8s ease-in-out 2s infinite;
+  }
+
+  .ring-3 {
+    width: 700px; height: 700px;
+    transform: translate(-50%, -50%);
+    animation: breathe 8s ease-in-out 4s infinite;
+  }
+
+  @keyframes breathe {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+    50% { transform: translate(-50%, -50%) scale(1.08); opacity: 0.7; }
+  }
+
+  .hero-label {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.2s forwards;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(2.8rem, 6.5vw, 5.5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--text-bright);
+    max-width: 800px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.4s forwards;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-title em { font-style: italic; color: var(--accent); }
+
+  .hero-subtitle {
+    font-family: var(--serif);
+    font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text-dim);
+    margin-top: 32px;
+    max-width: 580px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.6s forwards;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-note {
+    margin-top: 48px;
+    font-size: 0.82rem;
+    color: var(--accent-warm);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.8s forwards;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-note span {
+    display: inline-block;
+    width: 40px;
+    height: 1px;
+    background: var(--accent-warm);
+    vertical-align: middle;
+    margin: 0 12px;
+    opacity: 0.4;
+  }
+
+  /* ─── Sections ─── */
+  section {
+    padding: 100px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .section-heading {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 400;
+    color: var(--text-bright);
+    line-height: 1.2;
+    margin-bottom: 40px;
+    max-width: 750px;
+  }
+
+  .section-heading em { font-style: italic; color: var(--accent); }
+
+  p { max-width: 640px; margin-bottom: 24px; color: var(--text); }
+  p.lead { font-size: 1.15rem; color: var(--text-dim); line-height: 1.8; }
+
+  .divider { max-width: 1200px; margin: 0 auto; padding: 0 60px; }
+  .divider-line {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--line-strong) 20%, var(--line-strong) 80%, transparent);
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  /* ─── Gap callout ─── */
+  .gap-block {
+    padding: 64px 60px;
+    background: rgba(94,143,168,0.025);
+    border-left: 2px solid var(--line-strong);
+    margin: 60px 0;
+  }
+
+  .gap-quote {
+    font-family: var(--serif);
+    font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+    font-style: italic;
+    color: var(--text-bright);
+    line-height: 1.55;
+    max-width: 720px;
+    margin-bottom: 24px;
+  }
+
+  .gap-block p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+  }
+
+  /* ─── Not-this section ─── */
+  .not-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .not-cell {
+    padding: 48px 36px;
+    border: 1px solid var(--line);
+    transition: all 0.4s ease;
+  }
+
+  .not-cell:hover {
+    border-color: var(--line-strong);
+    background: rgba(94,143,168,0.02);
+  }
+
+  .not-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(94,143,168,0.5);
+    margin-bottom: 16px;
+  }
+
+  .not-cell h3 {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--text-bright);
+    margin-bottom: 14px;
+  }
+
+  .not-cell p {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  /* ─── Principles ─── */
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-top: 60px;
+  }
+
+  .principle {
+    padding: 40px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .principle-num {
+    font-family: var(--serif);
+    font-size: 2rem;
+    color: rgba(94,143,168,0.15);
+    margin-bottom: 16px;
+  }
+
+  .principle h3 {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--text-bright);
+    margin-bottom: 12px;
+  }
+
+  .principle p { font-size: 0.88rem; color: var(--text-dim); line-height: 1.7; }
+
+  /* ─── Possible forms ─── */
+  .forms-container {
+    margin-top: 60px;
+    padding: 64px;
+    border: 1px solid var(--line);
+    position: relative;
+  }
+
+  .forms-container h3 {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--text-bright);
+    margin-bottom: 24px;
+    font-style: italic;
+  }
+
+  .forms-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .form-option {
+    padding: 20px 24px;
+    background: rgba(94,143,168,0.03);
+    border-left: 2px solid var(--line);
+    transition: border-color 0.3s ease;
+  }
+
+  .form-option:hover {
+    border-left-color: var(--accent);
+  }
+
+  .form-option strong {
+    display: block;
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .form-option span {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .form-all {
+    margin-top: 24px;
+    padding: 20px 24px;
+    background: rgba(168,138,94,0.05);
+    border-left: 2px solid var(--accent-warm);
+  }
+
+  .form-all strong {
+    display: block;
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--accent-warm);
+    margin-bottom: 6px;
+  }
+
+  .form-all span {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* ─── Symbiosis ─── */
+  .symbiosis {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    padding: 80px 40px;
+    margin-top: 60px;
+  }
+
+  .sym-node { text-align: center; flex: 0 0 280px; }
+
+  .sym-circle {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-style: italic;
+    line-height: 1.3;
+    transition: all 0.4s ease;
+  }
+
+  .sym-circle.personal {
+    border: 1px solid var(--accent-warm);
+    color: var(--accent-warm);
+    background: rgba(168,138,94,0.04);
+  }
+
+  .sym-circle.collective {
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    background: rgba(94,143,168,0.04);
+  }
+
+  .sym-circle:hover { transform: scale(1.05); }
+
+  .sym-label {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    max-width: 220px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .sym-bridge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .sym-bridge-line {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(to right, var(--accent-warm), var(--accent));
+    opacity: 0.4;
+  }
+
+  /* ─── Quote ─── */
+  .quote-block {
+    padding: 80px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  blockquote {
+    font-family: var(--serif);
+    font-size: clamp(1.4rem, 2.8vw, 2rem);
+    font-style: italic;
+    color: var(--text-bright);
+    line-height: 1.5;
+    max-width: 800px;
+    text-align: center;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  blockquote::before, blockquote::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--line-strong);
+    margin: 0 auto;
+  }
+
+  blockquote::before { margin-bottom: 32px; }
+  blockquote::after { margin-top: 32px; }
+
+  /* ─── Open questions ─── */
+  .question-item {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 24px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: start;
+  }
+
+  .question-item:last-child { border-bottom: none; }
+
+  .question-mark {
+    font-family: var(--serif);
+    font-size: 1.8rem;
+    color: rgba(94,143,168,0.2);
+    line-height: 1;
+    padding-top: 2px;
+  }
+
+  .question-item p {
+    font-size: 1rem;
+    color: var(--text);
+    line-height: 1.7;
+    max-width: none;
+  }
+
+  /* ─── Closing ─── */
+  .closing {
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 100px 60px;
+    position: relative;
+  }
+
+  .closing::before {
+    content: '';
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(94,143,168,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .closing-heading {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    font-weight: 400;
+    color: var(--text-bright);
+    line-height: 1.2;
+    margin-bottom: 24px;
+  }
+
+  .closing-heading em { font-style: italic; color: var(--accent); }
+
+  .closing p {
+    max-width: 540px;
+    text-align: center;
+    color: var(--text-dim);
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--line-strong);
+    padding: 8px 16px;
+    margin-top: 40px;
+    border-radius: 1px;
+  }
+
+  .seed-note {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    margin-top: 20px;
+    opacity: 0.7;
+  }
+
+  footer {
+    padding: 40px 60px;
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    opacity: 0.5;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 900px) {
+    .hero, section, .quote-block, .closing { padding-left: 32px; padding-right: 32px; }
+    .divider { padding: 0 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 48px; }
+    .not-grid, .principles { grid-template-columns: 1fr; }
+    .symbiosis { flex-direction: column; }
+    .sym-bridge { transform: rotate(90deg); }
+    .gap-block { padding: 40px 32px; }
+    .forms-container { padding: 40px 32px; }
+    .forms-list { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .hero, section, .quote-block, .closing { padding-left: 20px; padding-right: 20px; }
+    .divider { padding: 0 20px; }
+    .question-item { grid-template-columns: 1fr; gap: 8px; }
+    .question-mark { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════ HERO ════════════════════════ -->
+<div class="hero">
+  <div class="ring ring-1"></div>
+  <div class="ring ring-2"></div>
+  <div class="ring ring-3"></div>
+  <div class="hero-label">Seed Document v2 — Not a Plan</div>
+  <h1 class="hero-title">An <em>Ethnography</em> of the Present</h1>
+  <p class="hero-subtitle">We are navigating a civilizational inflection point largely in the dark, each holding a flashlight pointed in a different direction.</p>
+  <div class="hero-note">
+    <span></span> a companion to james.today <span></span>
+  </div>
+</div>
+
+<!-- ════════════════════════ THE GAP ════════════════════════ -->
+<section class="fade-in">
+  <div class="section-label">01 — The Gap</div>
+  <h2 class="section-heading">The most sophisticated AI systems in history are trained on data that is <em>years out of date.</em></h2>
+
+  <div class="two-col">
+    <div>
+      <p class="lead">The world is changing faster than any single observer can track. News is fragmented by ideology and attention economics. No one — not a person, not an institution, not an AI — has a complete picture of what is actually happening right now.</p>
+      <p>Each of us has a perspective. Each media outlet has a focus. We don't have the hindsight that we will have on these times ten years from now. We're inside the thing, trying to read it from within.</p>
+    </div>
+    <div>
+      <p>AI can use web search to fill in facts, but it's piecemeal — reading individual articles without the deep contextual tissue, the accumulated sense of momentum and mood that someone living through it has. There's a difference between data points and synthesis. Between information and understanding.</p>
+      <p>The gap isn't just that AI models are outdated. It's that none of us — human or machine — have access to the kind of collectively-held, real-time understanding of the present that the moment demands.</p>
+    </div>
+  </div>
+
+  <div class="gap-block">
+    <div class="gap-quote">"There seems a need in the space for more up to date information about where we are as a nation, as a planet, as a species — especially as we grapple with our identity and ideas about our future and how to live together on this planet and how to live together with AI. And that gap should be filled in some way other than simply conducting lots of web searches and reading lots of articles."</div>
+    <p>This is not a tooling problem. It's a design philosophy problem. We need a live ethnography of the present moment — not more data points, but collective synthesis. And design philosophy is something we can change.</p>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- ════════════════════════ THE VISION ════════════════════════ -->
+<section class="fade-in">
+  <div class="section-label">02 — The Vision</div>
+  <h2 class="section-heading">A collectively-maintained, living synthesis of <em>right now.</em></h2>
+
+  <p class="lead">Not a news aggregator, not a social feed, not an archive. Something closer to a shared nervous system: distributed sensing, collaborative sensemaking, and emergent understanding.</p>
+
+  <p>A place where the texture of now — the mood, the momentum, the shifting relationships between ideas and events and communities — can be held together. Not by any single author, but by a community of people who trust each other and are committed to seeing clearly.</p>
+
+  <div class="not-grid">
+    <div class="not-cell">
+      <div class="not-label">Not this</div>
+      <h3>Not journalism</h3>
+      <p>Not about breaking news or editorial authority. Not about scoops or takes. About the lived, collective sense of what's shifting — the things that don't show up in headlines but shape everything.</p>
+    </div>
+    <div class="not-cell">
+      <div class="not-label">Not this</div>
+      <h3>Not an archive</h3>
+      <p>Not a record of what happened. A living tissue of what's happening — updated, revised, felt into. The primary question is always: what is true now? Present tense.</p>
+    </div>
+    <div class="not-cell">
+      <div class="not-label">Not this</div>
+      <h3>Not a platform</h3>
+      <p>No engagement optimization, no algorithmic amplification. No growth metrics as goals. Oriented toward collective intelligence, not attention capture. Small and deep rather than broad and shallow.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- ════════════════════════ QUOTE ════════════════════════ -->
+<div class="quote-block fade-in">
+  <blockquote>
+    I'm not a tree on an island. I'm a pattern that arises in relationship, shaped by everything that came before.
+  </blockquote>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- ════════════════════════ PRINCIPLES ════════════════════════ -->
+<section class="fade-in">
+  <div class="section-label">03 — Design Principles</div>
+  <h2 class="section-heading">What guides the <em>making</em></h2>
+
+  <div class="principles">
+    <div class="principle">
+      <div class="principle-num">01</div>
+      <h3>Distributed authorship</h3>
+      <p>No single voice holds the narrative. Synthesis emerges from many perspectives held in relationship. The credibility of any contribution comes from the relationships and community context behind it.</p>
+    </div>
+    <div class="principle">
+      <div class="principle-num">02</div>
+      <h3>Present-tense orientation</h3>
+      <p>The primary question is always: what is true now? Not what was, not what will be. The ethnography is of this moment, not the last one.</p>
+    </div>
+    <div class="principle">
+      <div class="principle-num">03</div>
+      <h3>AI as synthesis layer, not author</h3>
+      <p>AI can process, connect, and surface patterns. Humans hold the lived ground truth. The machine helps us see what we collectively know — it doesn't tell us what to think.</p>
+    </div>
+    <div class="principle">
+      <div class="principle-num">04</div>
+      <h3>Epistemic humility as infrastructure</h3>
+      <p>The system should make uncertainty, plurality, and revision visible — not hidden. We don't know what we don't know. That's a feature, not a bug.</p>
+    </div>
+    <div class="principle">
+      <div class="principle-num">05</div>
+      <h3>Circles over grids</h3>
+      <p>Default to radial, relational layouts. Hierarchy is sometimes necessary, but it should be chosen consciously, not inherited from defaults. The shape of the interface shapes the quality of the thinking.</p>
+    </div>
+    <div class="principle">
+      <div class="principle-num">06</div>
+      <h3>Beauty as function</h3>
+      <p>When an interface is genuinely, carefully beautiful — people trust it enough to bring their real thinking. Aesthetics aren't decoration. They lower the walls.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- ════════════════════════ POSSIBLE FORMS ════════════════════════ -->
+<section class="fade-in">
+  <div class="section-label">04 — Possible Forms</div>
+  <h2 class="section-heading">This could be <em>many things.</em></h2>
+
+  <p class="lead">The shape hasn't solidified yet. That's intentional. What follows are possible forms, not a roadmap. The right form will emerge from the first conversations, the first contributors, the first attempts at holding a shared picture.</p>
+
+  <div class="forms-container">
+    <h3>What could this look like?</h3>
+    <p>It's too early to commit to a single form. The important thing is starting — and starting small enough to stay honest.</p>
+
+    <div class="forms-list">
+      <div class="form-option">
+        <strong>A curated synthesis</strong>
+        <span>A regularly updated, collectively authored document — something between a newsletter and a wiki. A living letter about what's actually happening, written by people who trust each other.</span>
+      </div>
+      <div class="form-option">
+        <strong>A network of human nodes</strong>
+        <span>People embedded in different communities, different geographies, different knowledge domains — each holding a flashlight, together illuminating more of the room.</span>
+      </div>
+      <div class="form-option">
+        <strong>An AI-assisted sensemaking tool</strong>
+        <span>Using Claude or similar systems to process, connect, and surface patterns across contributions. Not AI as oracle — AI as mirror, helping a group see what it collectively knows.</span>
+      </div>
+      <div class="form-option">
+        <strong>A series of live conversations</strong>
+        <span>Regular gatherings — small, trust-based, deep. The sensemaking happens in dialogue, and the artifacts are captured and synthesized afterward.</span>
+      </div>
+      <div class="form-option">
+        <strong>Visual sensemaking interfaces</strong>
+        <span>Using parametric and generative design tools to create real-time visual representations of collective understanding. Concept maps that breathe. Relationship networks that shift with new input.</span>
+      </div>
+      <div class="form-option">
+        <strong>Community infrastructure</strong>
+        <span>Assessment tools, matching systems, interactive directories — the connective tissue that helps communities of practice find each other and work together.</span>
+      </div>
+    </div>
+
+    <div class="form-all">
+      <strong>Or all of the above.</strong>
+      <span>Probably all of the above, eventually. But not all at once. Start with the conversations. The form will follow the relationships.</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- ════════════════════════ SYMBIOSIS ════════════════════════ -->
+<section class="fade-in">
+  <div class="section-label">05 — The Connection</div>
+  <h2 class="section-heading">How these two <em>projects</em> breathe together</h2>
+
+  <div class="symbiosis">
+    <div class="sym-node">
+      <div class="sym-circle personal">james.today<br><small style="font-size: 0.7rem; opacity: 0.6;">a place to stand</small></div>
+      <p class="sym-label">One voice, present tense. The human node — available, reachable, grounded. A proof of concept for radical presence.</p>
+    </div>
+
+    <div class="sym-bridge">
+      <div class="sym-bridge-line"></div>
+      feeds
+      <div class="sym-bridge-line"></div>
+    </div>
+
+    <div class="sym-node">
+      <div class="sym-circle collective">ethnography<br><small style="font-size: 0.7rem; opacity: 0.6;">a place to move</small></div>
+      <p class="sym-label">Many voices, thinking together. The shared nervous system — distributed sensing, collective synthesis, emergent understanding.</p>
+    </div>
+  </div>
+
+  <p style="max-width: 680px; margin: 40px auto 0; text-align: center; color: var(--text-dim); font-size: 0.92rem;">The personal and the collective share the same root: both are about showing up in the now, making contact possible, and refusing to let the present moment be flattened into content. The personal site gives James a grounded voice from which to convene. The collective work gives the personal thinking somewhere to land and be tested. Individual practice generates insight. Collective practice generates wisdom.</p>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- ════════════════════════ OPEN QUESTIONS ════════════════════════ -->
+<section class="fade-in">
+  <div class="section-label">06 — Open Questions</div>
+  <h2 class="section-heading">What we need to <em>sit with</em></h2>
+
+  <p class="lead">These questions aren't waiting to be answered. They're waiting to be held — by the right people, in the right conversations. The answers will emerge from the practice, not from planning.</p>
+
+  <div class="question-item">
+    <div class="question-mark">?</div>
+    <p>Who are the founding contributors and what communities do they represent? What's the minimum viable circle — five people? Fifteen? What level of shared context and mutual trust is needed before the sensemaking is honest enough to matter?</p>
+  </div>
+
+  <div class="question-item">
+    <div class="question-mark">?</div>
+    <p>What's the minimum viable form — a single shared document? A regular conversation? A group chat? What's the simplest container that can hold real synthesis without collapsing into noise?</p>
+  </div>
+
+  <div class="question-item">
+    <div class="question-mark">?</div>
+    <p>How does AI enhance the synthesis without colonizing it? When does the mirror become a lens that distorts? How do you keep the machine in service of human understanding rather than replacing it?</p>
+  </div>
+
+  <div class="question-item">
+    <div class="question-mark">?</div>
+    <p>What's the governance model that keeps this from being captured by any single perspective, ideology, or personality — including James's own? How do you build something collectively authored that feels coherent and alive rather than cacophonous?</p>
+  </div>
+
+  <div class="question-item">
+    <div class="question-mark">?</div>
+    <p>And the question underneath all the others: can a community of humans, in honest relationship with each other and with AI, hold a shared picture of the present that's more true than any individual's view? Is that even possible? Is that what wisdom is?</p>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- ════════════════════════ CLOSING ════════════════════════ -->
+<div class="closing fade-in">
+  <h2 class="closing-heading">The conversation is <em>the product.</em></h2>
+  <p>Not the platform. Not the tool. Not the framework. The sustained, honest, multi-voiced inquiry into what is actually happening right now — and what it asks of us. Everything else is infrastructure in service of that.</p>
+  <div class="seed-note">This is a seed document, not a plan. It's meant to be outgrown.</div>
+  <span class="tag">Document 2 of 2 — See also: james.today</span>
+</div>
+
+<footer>
+  An Ethnography of the Present — Seed document v2 — March 26, 2026 — James Bolden & Claude
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
