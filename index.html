@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sensemaking.today</title>
+<meta name="description" content="The Sensemaking Project — collective inquiry at the intersection of design, consciousness, and collaborative intelligence.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #060810;
+    --text: #d4dce8;
+    --text-dim: #5a6878;
+    --text-bright: #eaf0f8;
+    --accent: #5e8fa8;
+    --accent-warm: #a88a5e;
+    --line: rgba(94, 143, 168, 0.2);
+    --serif: 'Instrument Serif', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    overflow: hidden;
+  }
+
+  body {
+    font-family: var(--sans);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.025;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ─── Constellation — distributed nodes ─── */
+  .constellation {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .constellation svg {
+    width: 640px;
+    height: 640px;
+    opacity: 0;
+    animation: constIn 3s ease 0.5s forwards;
+  }
+
+  @keyframes constIn {
+    0% { opacity: 0; transform: scale(0.85); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  /* Breathing rings */
+  .ring {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    border: 1px solid rgba(94, 143, 168, 0.04);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .ring-1 {
+    width: 300px; height: 300px;
+    transform: translate(-50%, -50%);
+    animation: breathe 9s ease-in-out infinite;
+  }
+
+  .ring-2 {
+    width: 460px; height: 460px;
+    transform: translate(-50%, -50%);
+    animation: breathe 9s ease-in-out 3s infinite;
+  }
+
+  .ring-3 {
+    width: 620px; height: 620px;
+    transform: translate(-50%, -50%);
+    animation: breathe 9s ease-in-out 6s infinite;
+  }
+
+  @keyframes breathe {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+    50% { transform: translate(-50%, -50%) scale(1.06); opacity: 0.8; }
+  }
+
+  /* ─── Content ─── */
+  .content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 40px;
+    max-width: 620px;
+  }
+
+  .label {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.2s forwards;
+  }
+
+  .name {
+    font-family: var(--serif);
+    font-size: clamp(2.6rem, 7vw, 4.2rem);
+    font-weight: 400;
+    color: var(--text-bright);
+    line-height: 1.1;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.4s forwards;
+  }
+
+  .name em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+    color: var(--text-dim);
+    margin-top: 16px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.65s forwards;
+  }
+
+  .line {
+    width: 60px;
+    height: 1px;
+    background: var(--line);
+    margin: 36px auto;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.8s forwards;
+  }
+
+  .desc {
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--text-dim);
+    line-height: 1.8;
+    max-width: 440px;
+    margin: 0 auto;
+    opacity: 0;
+    animation: fadeUp 1s ease 1s forwards;
+  }
+
+  .quote {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(0.95rem, 2.2vw, 1.08rem);
+    color: var(--text);
+    line-height: 1.65;
+    margin-top: 40px;
+    padding: 0 20px;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.3s forwards;
+  }
+
+  .links {
+    margin-top: 48px;
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.6s forwards;
+  }
+
+  .links a {
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 10px 0;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+
+  .links a::after {
+    content: '';
+    position: absolute;
+    bottom: 6px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0;
+    transform: scaleX(0);
+    transition: all 0.3s ease;
+  }
+
+  .links a:hover { color: var(--text-bright); }
+  .links a:hover::after { opacity: 0.4; transform: scaleX(1); }
+
+  .links .warm { color: var(--accent-warm); }
+  .links .warm::after { background: var(--accent-warm); }
+
+  .sep {
+    color: var(--text-dim);
+    opacity: 0.3;
+    font-size: 0.7rem;
+    align-self: center;
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 32px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    opacity: 0;
+    animation: fadeUp 1s ease 1.9s forwards;
+    z-index: 1;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    .constellation svg { width: 380px; height: 380px; }
+    .ring-1 { width: 220px; height: 220px; }
+    .ring-2 { width: 340px; height: 340px; }
+    .ring-3 { width: 460px; height: 460px; }
+    .content { padding: 24px; }
+    .links { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ring ring-1"></div>
+<div class="ring ring-2"></div>
+<div class="ring ring-3"></div>
+
+<!-- Constellation — interconnected nodes -->
+<div class="constellation">
+  <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <!-- Nodes -->
+    <circle cx="100" cy="100" r="2.5" fill="rgba(94,143,168,0.12)"/>
+    <circle cx="72" cy="68" r="1.8" fill="rgba(94,143,168,0.09)"/>
+    <circle cx="134" cy="72" r="1.5" fill="rgba(94,143,168,0.08)"/>
+    <circle cx="60" cy="110" r="1.3" fill="rgba(94,143,168,0.07)"/>
+    <circle cx="140" cy="120" r="2" fill="rgba(94,143,168,0.1)"/>
+    <circle cx="88" cy="140" r="1.6" fill="rgba(94,143,168,0.08)"/>
+    <circle cx="118" cy="148" r="1.2" fill="rgba(94,143,168,0.06)"/>
+    <circle cx="52" cy="84" r="1" fill="rgba(94,143,168,0.05)"/>
+    <circle cx="148" cy="92" r="1.3" fill="rgba(94,143,168,0.06)"/>
+    <circle cx="100" cy="56" r="1.4" fill="rgba(94,143,168,0.07)"/>
+    <circle cx="76" cy="128" r="1.1" fill="rgba(94,143,168,0.06)"/>
+    <circle cx="130" cy="140" r="1" fill="rgba(94,143,168,0.05)"/>
+    <!-- Connections -->
+    <line x1="100" y1="100" x2="72" y2="68" stroke="rgba(94,143,168,0.04)" stroke-width="0.4"/>
+    <line x1="100" y1="100" x2="134" y2="72" stroke="rgba(94,143,168,0.04)" stroke-width="0.4"/>
+    <line x1="100" y1="100" x2="60" y2="110" stroke="rgba(94,143,168,0.04)" stroke-width="0.4"/>
+    <line x1="100" y1="100" x2="140" y2="120" stroke="rgba(94,143,168,0.04)" stroke-width="0.4"/>
+    <line x1="100" y1="100" x2="88" y2="140" stroke="rgba(94,143,168,0.04)" stroke-width="0.4"/>
+    <line x1="72" y1="68" x2="100" y2="56" stroke="rgba(94,143,168,0.03)" stroke-width="0.3"/>
+    <line x1="134" y1="72" x2="148" y2="92" stroke="rgba(94,143,168,0.03)" stroke-width="0.3"/>
+    <line x1="134" y1="72" x2="100" y2="56" stroke="rgba(94,143,168,0.03)" stroke-width="0.3"/>
+    <line x1="60" y1="110" x2="52" y2="84" stroke="rgba(94,143,168,0.03)" stroke-width="0.3"/>
+    <line x1="60" y1="110" x2="76" y2="128" stroke="rgba(94,143,168,0.03)" stroke-width="0.3"/>
+    <line x1="140" y1="120" x2="148" y2="92" stroke="rgba(94,143,168,0.03)" stroke-width="0.3"/>
+    <line x1="140" y1="120" x2="130" y2="140" stroke="rgba(94,143,168,0.03)" stroke-width="0.3"/>
+    <line x1="88" y1="140" x2="118" y2="148" stroke="rgba(94,143,168,0.03)" stroke-width="0.3"/>
+    <line x1="88" y1="140" x2="76" y2="128" stroke="rgba(94,143,168,0.03)" stroke-width="0.3"/>
+    <line x1="72" y1="68" x2="52" y2="84" stroke="rgba(94,143,168,0.025)" stroke-width="0.3"/>
+    <line x1="118" y1="148" x2="130" y2="140" stroke="rgba(94,143,168,0.025)" stroke-width="0.3"/>
+  </svg>
+</div>
+
+<div class="content">
+  <div class="label">The Sensemaking Project</div>
+  <h1 class="name">sensemaking<em>.today</em></h1>
+  <p class="subtitle">An ethnography of the present</p>
+  <div class="line"></div>
+  <p class="desc">
+    A space for collective inquiry — distributed sensing, collaborative synthesis, and emergent understanding. We're building the infrastructure for thinking together about what's actually happening right now.
+  </p>
+  <p class="quote">
+    "We are each holding a flashlight pointed in a different direction. The work is to build the spaces where we can see by each other's light."
+  </p>
+  <div class="links">
+    <a href="https://james.today" class="warm">james.today</a>
+    <span class="sep">·</span>
+    <a href="mailto:james@iriscocreative.com">Get involved</a>
+  </div>
+</div>
+
+<div class="footer">Gathering the first circle</div>
+
+</body>
+</html>
